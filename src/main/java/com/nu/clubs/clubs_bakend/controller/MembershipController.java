@@ -13,28 +13,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nu.clubs.clubs_bakend.dto.MembershipRequest;
 import com.nu.clubs.clubs_bakend.dto.MembershipResponse;
 import com.nu.clubs.clubs_bakend.dto.mapper.MembershipMapper;
 import com.nu.clubs.clubs_bakend.model.Membership;
 import com.nu.clubs.clubs_bakend.service.MembershipService;
 
-import lombok.RequiredArgsConstructor;
-
 @RestController
-@RequestMapping("/memberships")
-@RequiredArgsConstructor
+@RequestMapping("/applications")
 public class MembershipController {
     private final MembershipService membershipService;
 
-    @PostMapping
-    public ResponseEntity<MembershipResponse> createMembership(@RequestBody MembershipRequest request) {
-        Membership membership = new Membership();
-        membership.setUserId(request.getUserId());
-        membership.setClubId(request.getClubId());
-        
-        Membership created = membershipService.createMembership(membership);
-        return ResponseEntity.status(HttpStatus.CREATED).body(MembershipMapper.toResponse(created));
+    public MembershipController(MembershipService membershipService) {
+        this.membershipService = membershipService;
     }
 
     @GetMapping
@@ -47,7 +37,16 @@ public class MembershipController {
 
     @GetMapping("/{id}")
     public ResponseEntity<MembershipResponse> getMembershipById(@PathVariable Long id) {
-        return ResponseEntity.ok(MembershipMapper.toResponse(membershipService.findById(id)));
+        return membershipService.findById(id)
+                .map(MembershipMapper::toResponse)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<MembershipResponse> createMembership(@RequestBody Membership membership) {
+        Membership created = membershipService.create(membership);
+        return ResponseEntity.status(HttpStatus.CREATED).body(MembershipMapper.toResponse(created));
     }
 
     @DeleteMapping("/{id}")
