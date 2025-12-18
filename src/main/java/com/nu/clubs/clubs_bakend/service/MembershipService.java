@@ -6,9 +6,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nu.clubs.clubs_bakend.exception.NotFoundException;
 import com.nu.clubs.clubs_bakend.model.Membership;
 import com.nu.clubs.clubs_bakend.repository.MembershipRepository;
-import com.nu.clubs.clubs_bakend.exception.NotFoundException;
 
 @Service
 public class MembershipService {
