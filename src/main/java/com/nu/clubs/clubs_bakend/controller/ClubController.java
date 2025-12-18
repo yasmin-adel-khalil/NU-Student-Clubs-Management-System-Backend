@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nu.clubs.clubs_bakend.dto.ClubRequest;
 import com.nu.clubs.clubs_bakend.model.Club;
 import com.nu.clubs.clubs_bakend.service.ClubService;
 
@@ -30,15 +29,15 @@ public class ClubController {
     private final ClubService clubService;
     
     @PostMapping
-    public ResponseEntity<Club> createClub(@RequestBody ClubRequest request) {
-        Club club = new Club();
-        club.setName(request.getName());
-        club.setDescription(request.getDescription());
-        club.setPresident(request.getPresident());
-        club.setEmail(request.getEmail());
-        club.setCategory(request.getCategory());
+    public ResponseEntity<Club> createClub(@RequestBody Club club) {
         Club createdClub = clubService.createClub(club);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdClub);
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<Club> getClubById(@PathVariable Long id) {
+        Club club = clubService.getClubById(id);
+        return ResponseEntity.ok(club);
     }
     
     @GetMapping
@@ -53,20 +52,8 @@ public class ClubController {
         return ResponseEntity.ok(clubs);
     }
     
-    @GetMapping("/{id}")
-    public ResponseEntity<Club> getClubById(@PathVariable Long id) {
-        Club club = clubService.getClubById(id);
-        return ResponseEntity.ok(club);
-    }
-    
     @PutMapping("/{id}")
-    public ResponseEntity<Club> updateClub(@PathVariable Long id, @RequestBody ClubRequest request) {
-        Club club = new Club();
-        club.setName(request.getName());
-        club.setDescription(request.getDescription());
-        club.setPresident(request.getPresident());
-        club.setEmail(request.getEmail());
-        club.setCategory(request.getCategory());
+    public ResponseEntity<Club> updateClub(@PathVariable Long id, @RequestBody Club club) {
         Club updatedClub = clubService.updateClub(id, club);
         return ResponseEntity.ok(updatedClub);
     }
