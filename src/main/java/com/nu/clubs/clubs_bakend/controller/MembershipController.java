@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,5 +44,20 @@ public class MembershipController {
     public ResponseEntity<Void> deleteMembership(@PathVariable Long id) {
         membershipService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/approve")
+    public ResponseEntity<MembershipResponse> approveMembership(@PathVariable Long id) {
+        return ResponseEntity.ok(MembershipMapper.toResponse(membershipService.approveMembership(id)));
+    }
+
+    @PutMapping("/{id}/reject")
+    public ResponseEntity<MembershipResponse> rejectMembership(@PathVariable Long id) {
+        return ResponseEntity.ok(MembershipMapper.toResponse(membershipService.rejectMembership(id)));
+    }
+
+    @PutMapping("/{id}/withdraw")
+    public ResponseEntity<MembershipResponse> withdrawMembership(@PathVariable Long id) {
+        return ResponseEntity.ok(MembershipMapper.toResponse(membershipService.withdrawMembership(id)));
     }
 }
