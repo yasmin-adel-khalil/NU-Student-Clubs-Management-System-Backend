@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,13 +14,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nu.clubs.clubs_bakend.dto.MembershipRequest;
 import com.nu.clubs.clubs_bakend.dto.MembershipResponse;
 import com.nu.clubs.clubs_bakend.dto.mapper.MembershipMapper;
 import com.nu.clubs.clubs_bakend.model.Membership;
 import com.nu.clubs.clubs_bakend.service.MembershipService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/applications")
+@Validated
 public class MembershipController {
     private final MembershipService membershipService;
 
@@ -44,7 +49,8 @@ public class MembershipController {
     }
 
     @PostMapping
-    public ResponseEntity<MembershipResponse> createMembership(@RequestBody Membership membership) {
+    public ResponseEntity<MembershipResponse> createMembership(@Valid @RequestBody MembershipRequest membershipRequest) {
+        Membership membership = MembershipMapper.toEntity(membershipRequest);
         Membership created = membershipService.create(membership);
         return ResponseEntity.status(HttpStatus.CREATED).body(MembershipMapper.toResponse(created));
     }

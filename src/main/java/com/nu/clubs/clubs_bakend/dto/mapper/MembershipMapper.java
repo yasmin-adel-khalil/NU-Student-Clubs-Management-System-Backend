@@ -1,5 +1,6 @@
 package com.nu.clubs.clubs_bakend.dto.mapper;
 
+import com.nu.clubs.clubs_bakend.dto.MembershipRequest;
 import com.nu.clubs.clubs_bakend.dto.MembershipResponse;
 import com.nu.clubs.clubs_bakend.model.Membership;
 
@@ -14,5 +15,13 @@ public final class MembershipMapper {
                 membership.getClubId(),
                 membership.getJoinedAt()
         );
+    }
+
+    public static Membership toEntity(MembershipRequest request) {
+        if (request == null) return null;
+        Membership membership = new Membership();
+        membership.setUserId(request.getUserId());
+        membership.setClubId(request.getClubId());
+        return membership;
     }
 }
