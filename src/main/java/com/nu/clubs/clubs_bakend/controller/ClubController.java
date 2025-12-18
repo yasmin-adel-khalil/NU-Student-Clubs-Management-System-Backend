@@ -52,6 +52,12 @@ public class ClubController {
         return ResponseEntity.ok(clubs);
     }
     
+    @GetMapping("/category")
+    public ResponseEntity<List<Club>> getClubsByCategory(@RequestParam String category) {
+        List<Club> clubs = clubService.findByCategory(category);
+        return ResponseEntity.ok(clubs);
+    }
+    
     @PutMapping("/{id}")
     public ResponseEntity<Club> updateClub(@PathVariable Long id, @RequestBody Club club) {
         Club updatedClub = clubService.updateClub(id, club);
