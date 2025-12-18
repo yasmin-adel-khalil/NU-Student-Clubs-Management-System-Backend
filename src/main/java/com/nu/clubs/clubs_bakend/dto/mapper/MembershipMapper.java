@@ -13,8 +13,7 @@ public final class MembershipMapper {
                 membership.getUserId(),
                 membership.getClubId(),
                 membership.getStatus() != null ? membership.getStatus().name() : null,
-                membership.getAppliedAt(),
-                membership.getProcessedAt()
+                membership.getJoinedAt()
         );
     }
 }

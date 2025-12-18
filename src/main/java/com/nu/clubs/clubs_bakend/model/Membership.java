@@ -35,17 +35,14 @@ public class Membership {
     @Column(nullable = false)
     private MembershipStatus status;
 
-    @Column(name = "applied_at", nullable = false, updatable = false)
-    private LocalDateTime appliedAt;
-
-    @Column(name = "processed_at")
-    private LocalDateTime processedAt;
+    @Column(name = "joined_at", nullable = false, updatable = false)
+    private LocalDateTime joinedAt;
 
     @PrePersist
     protected void onCreate() {
-        appliedAt = LocalDateTime.now();
+        joinedAt = LocalDateTime.now();
         if (status == null) {
-            status = MembershipStatus.PENDING;
+            status = MembershipStatus.ACTIVE;
         }
     }
 }
