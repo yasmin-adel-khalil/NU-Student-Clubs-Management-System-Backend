@@ -1,16 +1,18 @@
 package com.nu.clubs.clubs_bakend.service;
 
-import com.nu.clubs.clubs_bakend.exception.BadRequestException;
-import com.nu.clubs.clubs_bakend.exception.NotFoundException;
-import com.nu.clubs.clubs_bakend.model.Club;
-import com.nu.clubs.clubs_bakend.repository.ClubRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.nu.clubs.clubs_bakend.exception.BadRequestException;
+import com.nu.clubs.clubs_bakend.exception.NotFoundException;
+import com.nu.clubs.clubs_bakend.model.Club;
+import com.nu.clubs.clubs_bakend.repository.ClubRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +39,10 @@ public class ClubService {
     
     public List<Club> searchClubsByName(String name) {
         return clubRepository.findByNameContainingIgnoreCase(name);
+    }
+    
+    public List<Club> findByCategory(String category) {
+        return clubRepository.findByCategory(category);
     }
     
     @Transactional
