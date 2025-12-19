@@ -13,7 +13,8 @@ public class EventResponse {
 	public EventResponse() {
 	}
 
-	public EventResponse(Long id, String title, String description, LocalDateTime eventDate, String location, Long clubId) {
+	public EventResponse(Long id, String title, String description, LocalDateTime eventDate, String location,
+			Long clubId) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
