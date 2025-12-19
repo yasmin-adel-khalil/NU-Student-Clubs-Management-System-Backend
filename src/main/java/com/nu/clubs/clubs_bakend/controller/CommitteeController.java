@@ -65,4 +65,23 @@ public class CommitteeController {
         committeeService.deleteCommittee(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Admin Endpoints
+    @PostMapping("/admin")
+    public ResponseEntity<Committee> createCommitteeAdmin(@RequestBody Committee committee) {
+        Committee created = committeeService.createCommittee(committee);
+        return ResponseEntity.ok(created);
+    }
+
+    @PutMapping("/admin/{id}")
+    public ResponseEntity<Committee> updateCommitteeAdmin(@PathVariable Long id, @RequestBody Committee committee) {
+        Committee updated = committeeService.updateCommittee(id, committee);
+        return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/admin/{id}")
+    public ResponseEntity<Void> deleteCommitteeAdmin(@PathVariable Long id) {
+        committeeService.deleteCommittee(id);
+        return ResponseEntity.noContent().build();
+    }
 }
