@@ -29,7 +29,7 @@ public class CommitteeService {
         if (committeeDetails.getHead() != null) committee.setHead(committeeDetails.getHead());
         if (committeeDetails.getPurpose() != null) committee.setPurpose(committeeDetails.getPurpose());
         if (committeeDetails.getIsActive() != null) committee.setIsActive(committeeDetails.getIsActive());
-        committee.setUpdatedAt(System.currentTimeMillis());
+        committee.setUpdatedAt(java.time.LocalDateTime.now());
         
         return committeeRepository.save(committee);
     }
