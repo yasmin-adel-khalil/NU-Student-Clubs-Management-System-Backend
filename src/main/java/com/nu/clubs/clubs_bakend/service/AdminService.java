@@ -30,7 +30,6 @@ public class AdminService {
         if (adminDetails.getAdminLevel() != null) admin.setAdminLevel(adminDetails.getAdminLevel());
         if (adminDetails.getCanManageAdmins() != null) admin.setCanManageAdmins(adminDetails.getCanManageAdmins());
         if (adminDetails.getCanManageClubs() != null) admin.setCanManageClubs(adminDetails.getCanManageClubs());
-        if (adminDetails.getCanManageApplications() != null) admin.setCanManageApplications(adminDetails.getCanManageApplications());
         admin.setUpdatedAt(System.currentTimeMillis());
         
         return adminRepository.save(admin);

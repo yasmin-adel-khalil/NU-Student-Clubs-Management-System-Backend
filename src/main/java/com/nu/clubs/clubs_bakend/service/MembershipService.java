@@ -1,10 +1,13 @@
 package com.nu.clubs.clubs_bakend.service;
 
 import com.nu.clubs.clubs_bakend.exception.NotFoundException;
+import com.nu.clubs.clubs_bakend.model.Club;
 import com.nu.clubs.clubs_bakend.model.Membership;
+import com.nu.clubs.clubs_bakend.model.User;
 import com.nu.clubs.clubs_bakend.repository.MembershipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,21 +17,48 @@ public class MembershipService {
     @Autowired
     private MembershipRepository membershipRepository;
 
-    public List<Membership> getByStatus(String status) {
+    public List<Membership> findAll() {
+        return membershipRepository.findAll();
+    }
+
+    public Membership findById(Long id) {
+        return membershipRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Membership not found with id: " + id));
+    }
+
+    public List<Membership> findByStatus(String status) {
         return membershipRepository.findByStatus(status);
     }
 
-    public Membership approve(Long id) {
-        Membership m = membershipRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Membership not found: " + id));
-        m.setStatus("APPROVED");
-        return membershipRepository.save(m);
+    public List<Membership> findByClub(Club club) {
+        return membershipRepository.findByClub(club);
     }
 
-    public Membership reject(Long id) {
-        Membership m = membershipRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Membership not found: " + id));
-        m.setStatus("REJECTED");
-        return membershipRepository.save(m);
+    public List<Membership> findByUser(User user) {
+        return membershipRepository.findByUser(user);
+    }
+
+    @Transactional
+    public Membership create(User user, Club club) {
+        Membership membership = new Membership();
+        membership.setUser(user);
+        membership.setClub(club);
+        membership.setStatus("ACTIVE");
+        return membershipRepository.save(membership);
+    }
+
+    @Transactional
+    public Membership updateStatus(Long id, String status) {
+        Membership membership = findById(id);
+        membership.setStatus(status);
+        return membershipRepository.save(membership);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        if (!membershipRepository.existsById(id)) {
+            throw new NotFoundException("Membership not found with id: " + id);
+        }
+        membershipRepository.deleteById(id);
     }
 }

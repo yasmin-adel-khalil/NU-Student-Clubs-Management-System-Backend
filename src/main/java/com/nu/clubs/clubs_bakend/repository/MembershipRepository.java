@@ -11,8 +11,6 @@ import java.util.List;
 @Repository
 public interface MembershipRepository extends JpaRepository<Membership, Long> {
     List<Membership> findByStatus(String status);
-
     List<Membership> findByClub(Club club);
-
     List<Membership> findByUser(User user);
 }

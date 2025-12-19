@@ -17,9 +17,6 @@ public class Admin extends User {
     @Column(name = "can_manage_clubs")
     private Boolean canManageClubs = false;
 
-    @Column(name = "can_manage_applications")
-    private Boolean canManageApplications = false;
-
     public Admin() {}
 
     public Admin(String email, String password, String firstName, String lastName) {
@@ -37,7 +34,4 @@ public class Admin extends User {
 
     public Boolean getCanManageClubs() { return canManageClubs; }
     public void setCanManageClubs(Boolean canManageClubs) { this.canManageClubs = canManageClubs; }
-
-    public Boolean getCanManageApplications() { return canManageApplications; }
-    public void setCanManageApplications(Boolean canManageApplications) { this.canManageApplications = canManageApplications; }
 }
