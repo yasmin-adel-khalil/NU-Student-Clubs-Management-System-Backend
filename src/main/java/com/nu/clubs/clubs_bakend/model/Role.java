@@ -1,4 +1,8 @@
 package com.nu.clubs.clubs_bakend.model;
 
-public class Role {
+public enum Role {
+    STUDENT,
+    ADMIN,
+    BOARD_MEMBER,
+    COMMITTEE
 }
