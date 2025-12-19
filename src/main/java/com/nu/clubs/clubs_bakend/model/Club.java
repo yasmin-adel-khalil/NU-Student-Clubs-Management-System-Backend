@@ -10,16 +10,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "app_clubs", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_app_clubs_name", columnNames = "name"),
-        @UniqueConstraint(name = "uk_app_clubs_email", columnNames = "email")
-})
+@Table(name = "clubs")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
