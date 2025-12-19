@@ -5,6 +5,8 @@ import com.nu.clubs.clubs_bakend.dto.EventResponse;
 import com.nu.clubs.clubs_bakend.exception.NotFoundException;
 import com.nu.clubs.clubs_bakend.model.Event;
 import com.nu.clubs.clubs_bakend.repository.EventRepository;
+import com.nu.clubs.clubs_bakend.service.EventService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,55 +15,56 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/events")
 public class EventController {
+    private final EventService eventService;
 
-    private final EventRepository eventRepository;
-
-    // Constructor Injection
-    public EventController(EventRepository eventRepository) {
-        this.eventRepository = eventRepository;
+    public EventController(EventService eventService) {
+        this.eventService = eventService;
     }
 
-    // ➡️ Create Event (POST)
-    @PostMapping
-    public EventResponse createEvent(@RequestBody EventRequest request) {
-        Event event = new Event();
-        event.setTitle(request.getTitle());
-        event.setDescription(request.getDescription());
-        event.setEventDate(request.getEventDate());
-        event.setClubId(request.getClubId());
-
-        Event saved = eventRepository.save(event);
-
-        EventResponse response = new EventResponse();
-        response.setId(saved.getId());
-        response.setTitle(saved.getTitle());
-        response.setDescription(saved.getDescription());
-        response.setEventDate(saved.getEventDate());
-
-        return response;
+    @GetMapping
+    public ResponseEntity<List<Event>> getAllEvents() {
+        return ResponseEntity.ok(eventService.getAllEvents());
     }
 
-    // ➡️ Get Events by Club (GET)
+    @GetMapping("/{id}")
+    public ResponseEntity<Event> getEventById(@PathVariable Long id) {
+        return eventService.getEventById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/club/{clubId}")
-    public List<EventResponse> getEventsByClub(@PathVariable Long clubId) {
-        return eventRepository.findByClubId(clubId)
-                .stream()
-                .map(event -> {
-                    EventResponse response = new EventResponse();
-                    response.setId(event.getId());
-                    response.setTitle(event.getTitle());
-                    response.setDescription(event.getDescription());
-                    response.setEventDate(event.getEventDate());
-                    return response;
-                })
-                .collect(Collectors.toList());
+    public ResponseEntity<List<Event>> getEventsByClub(@PathVariable Long clubId) {
+        return ResponseEntity.ok(eventService.getEventsByClub(clubId));
     }
 
-    // ➡️ Delete Event (DELETE)
-    @DeleteMapping("/{id}")
-    public void deleteEvent(@PathVariable Long id) {
-        Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
-        eventRepository.delete(event);
+    @PostMapping
+    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+        return ResponseEntity.ok(eventService.saveEvent(event));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event event) {
+        return eventService.getEventById(id)
+                .map(existing -> {
+                    event.setId(id);
+                    return ResponseEntity.ok(eventService.saveEvent(event));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
+        eventService.deleteEvent(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+
+
+
+
+
+
 }
+
+

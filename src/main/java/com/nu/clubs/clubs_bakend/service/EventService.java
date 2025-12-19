@@ -7,6 +7,7 @@ import com.nu.clubs.clubs_bakend.repository.EventRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,42 +18,24 @@ public class EventService {
         this.eventRepository = eventRepository;
     }
 
-    public EventResponse createEvent(EventRequest request) {
-        Event event = new Event();
-        event.setTitle(request.getTitle());
-        event.setDescription(request.getDescription());
-        event.setEventDate(request.getEventDate());
-        event.setClubId(request.getClubId());
-
-        Event saved = eventRepository.save(event);
-
-        EventResponse response = new EventResponse();
-        response.setId(saved.getId());
-        response.setTitle(saved.getTitle());
-        response.setDescription(saved.getDescription());
-        response.setEventDate(saved.getEventDate());
-
-        return response;
+    public List<Event> getAllEvents() {
+        return eventRepository.findAll();
     }
 
-    public List<EventResponse> getEventsByClub(Long clubId) {
-        return eventRepository.findByClubId(clubId)
-                .stream()
-                .map(event -> {
-                    EventResponse response = new EventResponse();
-                    response.setId(event.getId());
-                    response.setTitle(event.getTitle());
-                    response.setDescription(event.getDescription());
-                    response.setEventDate(event.getEventDate());
-                    return response;
-                })
-                .collect(Collectors.toList());
+    public Optional<Event> getEventById(Long id) {
+        return eventRepository.findById(id);
+    }
+
+    public List<Event> getEventsByClub(Long clubId) {
+        return eventRepository.findByClubId(clubId);
+    }
+
+    public Event saveEvent(Event event) {
+        return eventRepository.save(event);
     }
 
     public void deleteEvent(Long id) {
-        Event event = eventRepository.findById(id)
-                .orElseThrow();
-
-        eventRepository.delete(event);
+        eventRepository.deleteById(id);
     }
+
 }
