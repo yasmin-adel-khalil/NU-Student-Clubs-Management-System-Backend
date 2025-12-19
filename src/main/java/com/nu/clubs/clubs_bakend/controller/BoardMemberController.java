@@ -59,4 +59,23 @@ public class BoardMemberController {
         boardMemberService.deleteBoardMember(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Admin Endpoints
+    @PostMapping("/admin")
+    public ResponseEntity<BoardMember> createBoardMemberAdmin(@RequestBody BoardMember boardMember) {
+        BoardMember created = boardMemberService.createBoardMember(boardMember);
+        return ResponseEntity.ok(created);
+    }
+
+    @PutMapping("/admin/{id}")
+    public ResponseEntity<BoardMember> updateBoardMemberAdmin(@PathVariable Long id, @RequestBody BoardMember boardMember) {
+        BoardMember updated = boardMemberService.updateBoardMember(id, boardMember);
+        return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/admin/{id}")
+    public ResponseEntity<Void> deleteBoardMemberAdmin(@PathVariable Long id) {
+        boardMemberService.deleteBoardMember(id);
+        return ResponseEntity.noContent().build();
+    }
 }
