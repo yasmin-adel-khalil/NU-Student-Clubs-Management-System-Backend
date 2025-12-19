@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @DiscriminatorValue("BOARD_MEMBER")
 public class BoardMember extends User {
+
     @Column
     private String position;
 
@@ -12,27 +13,33 @@ public class BoardMember extends User {
     @JoinColumn(name = "club_id")
     private Club club;
 
-    @Column(name = "join_date")
-    private Long joinDate = System.currentTimeMillis();
-
-    @Column(name = "is_active_board")
+    @Column(name = "is_active_board_member")
     private Boolean isActiveBoardMember = true;
 
-    public BoardMember() {}
-
-    public BoardMember(String email, String password, String firstName, String lastName) {
-        super(email, password, firstName, lastName);
+    public BoardMember() {
     }
 
-    public String getPosition() { return position; }
-    public void setPosition(String position) { this.position = position; }
+    public String getPosition() {
+        return position;
+    }
 
-    public Club getClub() { return club; }
-    public void setClub(Club club) { this.club = club; }
+    public void setPosition(String position) {
+        this.position = position;
+    }
 
-    public Long getJoinDate() { return joinDate; }
-    public void setJoinDate(Long joinDate) { this.joinDate = joinDate; }
+    public Club getClub() {
+        return club;
+    }
 
-    public Boolean getIsActiveBoardMember() { return isActiveBoardMember; }
-    public void setIsActiveBoardMember(Boolean isActiveBoardMember) { this.isActiveBoardMember = isActiveBoardMember; }
+    public void setClub(Club club) {
+        this.club = club;
+    }
+
+    public Boolean getIsActiveBoardMember() {
+        return isActiveBoardMember;
+    }
+
+    public void setIsActiveBoardMember(Boolean isActiveBoardMember) {
+        this.isActiveBoardMember = isActiveBoardMember;
+    }
 }

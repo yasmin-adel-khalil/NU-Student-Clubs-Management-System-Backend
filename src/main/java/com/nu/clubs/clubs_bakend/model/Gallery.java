@@ -1,9 +1,15 @@
 package com.nu.clubs.clubs_bakend.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "galleries")
+@Table(name = "app_gallery")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Gallery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,59 +18,86 @@ public class Gallery {
     @Column(nullable = false)
     private String title;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String description;
+
+    @Column(nullable = false)
+    private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id", nullable = false)
     private Club club;
 
-    @Column
-    private String imageUrl;
-
-    @Column
-    private String category; // PHOTO, VIDEO, etc.
-
-    @Column(name = "is_public")
-    private Boolean isPublic = true;
-
     @Column(name = "created_at", nullable = false, updatable = false)
-    private Long createdAt = System.currentTimeMillis();
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private Long updatedAt = System.currentTimeMillis();
+    private LocalDateTime updatedAt;
 
-    public Gallery() {}
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
 
-    public Gallery(String title, Club club) {
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Club getClub() {
+        return club;
+    }
+
+    public void setClub(Club club) {
         this.club = club;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 
-    public Club getClub() { return club; }
-    public void setClub(Club club) { this.club = club; }
-
-    public String getImageUrl() { return imageUrl; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
-
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
-
-    public Boolean getIsPublic() { return isPublic; }
-    public void setIsPublic(Boolean isPublic) { this.isPublic = isPublic; }
-
-    public Long getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Long createdAt) { this.createdAt = createdAt; }
-
-    public Long getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(Long updatedAt) { this.updatedAt = updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

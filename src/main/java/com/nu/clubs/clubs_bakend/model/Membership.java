@@ -1,9 +1,15 @@
 package com.nu.clubs.clubs_bakend.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "memberships")
+@Table(name = "app_memberships")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Membership {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,44 +23,84 @@ public class Membership {
     @JoinColumn(name = "club_id", nullable = false)
     private Club club;
 
-    @Column
-    private String status; // ACTIVE, PENDING, REJECTED, LEFT
+    @Column(nullable = false)
+    private String status = "PENDING"; // PENDING, APPROVED, REJECTED
 
     @Column(name = "join_date")
-    private Long joinDate = System.currentTimeMillis();
+    private LocalDateTime joinDate;
 
-    @Column(name = "leave_date")
-    private Long leaveDate;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    @Column
-    private String membershipType; // REGULAR, ACTIVE, HONORARY
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
-    public Membership() {}
-
-    public Membership(User user, Club club) {
-        this.user = user;
-        this.club = club;
-        this.status = "PENDING";
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+        if (joinDate == null)
+            joinDate = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
+    public Long getId() {
+        return id;
+    }
 
-    public Club getClub() { return club; }
-    public void setClub(Club club) { this.club = club; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public User getUser() {
+        return user;
+    }
 
-    public Long getJoinDate() { return joinDate; }
-    public void setJoinDate(Long joinDate) { this.joinDate = joinDate; }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-    public Long getLeaveDate() { return leaveDate; }
-    public void setLeaveDate(Long leaveDate) { this.leaveDate = leaveDate; }
+    public Club getClub() {
+        return club;
+    }
 
-    public String getMembershipType() { return membershipType; }
-    public void setMembershipType(String membershipType) { this.membershipType = membershipType; }
+    public void setClub(Club club) {
+        this.club = club;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(LocalDateTime joinDate) {
+        this.joinDate = joinDate;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }
