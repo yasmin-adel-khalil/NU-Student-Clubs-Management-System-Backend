@@ -1,33 +1,56 @@
 package com.nu.clubs.clubs_bakend.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.nu.clubs.clubs_bakend.exception.NotFoundException;
+import com.nu.clubs.clubs_bakend.model.Club;
+import com.nu.clubs.clubs_bakend.model.Membership;
+import com.nu.clubs.clubs_bakend.model.User;
+import com.nu.clubs.clubs_bakend.repository.MembershipRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nu.clubs.clubs_bakend.exception.NotFoundException;
-import com.nu.clubs.clubs_bakend.model.Membership;
-import com.nu.clubs.clubs_bakend.repository.MembershipRepository;
+import java.util.List;
 
 @Service
 public class MembershipService {
-    private final MembershipRepository membershipRepository;
 
-    public MembershipService(MembershipRepository membershipRepository) {
-        this.membershipRepository = membershipRepository;
-    }
+    @Autowired
+    private MembershipRepository membershipRepository;
 
     public List<Membership> findAll() {
         return membershipRepository.findAll();
     }
 
-    public Optional<Membership> findById(Long id) {
-        return membershipRepository.findById(id);
+    public Membership findById(Long id) {
+        return membershipRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Membership not found with id: " + id));
+    }
+
+    public List<Membership> findByStatus(String status) {
+        return membershipRepository.findByStatus(status);
+    }
+
+    public List<Membership> findByClub(Club club) {
+        return membershipRepository.findByClub(club);
+    }
+
+    public List<Membership> findByUser(User user) {
+        return membershipRepository.findByUser(user);
     }
 
     @Transactional
-    public Membership create(Membership membership) {
+    public Membership create(User user, Club club) {
+        Membership membership = new Membership();
+        membership.setUser(user);
+        membership.setClub(club);
+        membership.setStatus("ACTIVE");
+        return membershipRepository.save(membership);
+    }
+
+    @Transactional
+    public Membership updateStatus(Long id, String status) {
+        Membership membership = findById(id);
+        membership.setStatus(status);
         return membershipRepository.save(membership);
     }
 

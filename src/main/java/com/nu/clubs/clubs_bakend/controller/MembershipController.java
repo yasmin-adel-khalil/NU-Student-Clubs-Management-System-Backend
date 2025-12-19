@@ -17,41 +17,44 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nu.clubs.clubs_bakend.dto.MembershipRequest;
 import com.nu.clubs.clubs_bakend.dto.MembershipResponse;
 import com.nu.clubs.clubs_bakend.dto.mapper.MembershipMapper;
+import com.nu.clubs.clubs_bakend.model.Club;
 import com.nu.clubs.clubs_bakend.model.Membership;
+import com.nu.clubs.clubs_bakend.model.User;
+import com.nu.clubs.clubs_bakend.service.ClubService;
 import com.nu.clubs.clubs_bakend.service.MembershipService;
+import com.nu.clubs.clubs_bakend.service.UserService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/applications")
+@RequestMapping("/memberships")
+@RequiredArgsConstructor
 @Validated
 public class MembershipController {
     private final MembershipService membershipService;
-
-    public MembershipController(MembershipService membershipService) {
-        this.membershipService = membershipService;
-    }
+    private final UserService userService;
+    private final ClubService clubService;
 
     @GetMapping
-    public List<MembershipResponse> getAllMemberships() {
-        return membershipService.findAll()
+    public ResponseEntity<List<MembershipResponse>> getAllMemberships() {
+        return ResponseEntity.ok(membershipService.findAll()
                 .stream()
                 .map(MembershipMapper::toResponse)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MembershipResponse> getMembershipById(@PathVariable Long id) {
-        return membershipService.findById(id)
-                .map(MembershipMapper::toResponse)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        Membership membership = membershipService.findById(id);
+        return ResponseEntity.ok(MembershipMapper.toResponse(membership));
     }
 
     @PostMapping
     public ResponseEntity<MembershipResponse> createMembership(@Valid @RequestBody MembershipRequest membershipRequest) {
-        Membership membership = MembershipMapper.toEntity(membershipRequest);
-        Membership created = membershipService.create(membership);
+        User user = userService.getUserById(membershipRequest.getUserId());
+        Club club = clubService.getClubById(membershipRequest.getClubId());
+        Membership created = membershipService.create(user, club);
         return ResponseEntity.status(HttpStatus.CREATED).body(MembershipMapper.toResponse(created));
     }
 

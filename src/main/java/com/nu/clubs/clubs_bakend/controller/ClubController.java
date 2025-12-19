@@ -32,29 +32,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 public class ClubController {
-    
+
     private final ClubService clubService;
-    
+
     @PostMapping
     public ResponseEntity<ClubResponse> createClub(@Valid @RequestBody ClubRequest clubRequest) {
         Club club = ClubMapper.toEntity(clubRequest);
         Club createdClub = clubService.createClub(club);
         return ResponseEntity.status(HttpStatus.CREATED).body(ClubMapper.toResponse(createdClub));
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<ClubResponse> getClubById(@PathVariable Long id) {
         Club club = clubService.getClubById(id);
         return ResponseEntity.ok(ClubMapper.toResponse(club));
     }
-    
+
     @GetMapping
     public ResponseEntity<Page<ClubResponse>> getAllClubs(Pageable pageable) {
         Page<Club> clubs = clubService.getAllClubs(pageable);
         Page<ClubResponse> responses = clubs.map(ClubMapper::toResponse);
         return ResponseEntity.ok(responses);
     }
-    
+
     @GetMapping("/search")
     public ResponseEntity<List<ClubResponse>> searchClubsByName(@RequestParam String name) {
         List<Club> clubs = clubService.searchClubsByName(name);
@@ -63,7 +63,7 @@ public class ClubController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(responses);
     }
-    
+
     @GetMapping("/category")
     public ResponseEntity<List<ClubResponse>> getClubsByCategory(@RequestParam String category) {
         List<Club> clubs = clubService.findByCategory(category);
@@ -72,7 +72,7 @@ public class ClubController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(responses);
     }
-    
+
     @PutMapping("/{id}")
     public ResponseEntity<ClubResponse> updateClub(@PathVariable Long id, @Valid @RequestBody ClubRequest clubRequest) {
         Club existingClub = clubService.getClubById(id);
@@ -80,7 +80,7 @@ public class ClubController {
         Club updatedClub = clubService.updateClub(id, existingClub);
         return ResponseEntity.ok(ClubMapper.toResponse(updatedClub));
     }
-    
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteClub(@PathVariable Long id) {
         clubService.deleteClub(id);
