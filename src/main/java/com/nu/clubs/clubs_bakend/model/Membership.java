@@ -1,8 +1,8 @@
 package com.nu.clubs.clubs_bakend.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
