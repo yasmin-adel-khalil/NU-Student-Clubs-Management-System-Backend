@@ -14,6 +14,6 @@ public class MembershipResponse {
     private Long userId;
     private Long clubId;
     private String status;
-    private LocalDateTime appliedAt;
-    private LocalDateTime processedAt;
+    private LocalDateTime joinedAt;
+    private LocalDateTime updatedAt;
 }
