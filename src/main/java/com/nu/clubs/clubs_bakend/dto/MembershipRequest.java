@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MembershipRequest {
-    
+
     @NotNull(message = "User ID is required")
     private Long userId;
-    
+
     @NotNull(message = "Club ID is required")
     private Long clubId;
 }

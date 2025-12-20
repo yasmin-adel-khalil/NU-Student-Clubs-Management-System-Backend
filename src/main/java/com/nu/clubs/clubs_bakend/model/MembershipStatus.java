@@ -4,5 +4,7 @@ public enum MembershipStatus {
     PENDING,
     APPROVED,
     REJECTED,
-    WITHDRAWN
+    WITHDRAWN,
+    ACTIVE,
+    INACTIVE
 }

@@ -1,9 +1,11 @@
 package com.nu.clubs.clubs_bakend.dto.mapper;
 
+import com.nu.clubs.clubs_bakend.dto.ClubRequest;
 import com.nu.clubs.clubs_bakend.dto.ClubResponse;
 import com.nu.clubs.clubs_bakend.model.Club;
 
 public final class ClubMapper {
+
     private ClubMapper() {}
 
     public static ClubResponse toResponse(Club club) {
@@ -18,5 +20,25 @@ public final class ClubMapper {
                 club.getCreatedAt(),
                 club.getUpdatedAt()
         );
+    }
+
+    public static Club toEntity(ClubRequest request) {
+        if (request == null) return null;
+        Club club = new Club();
+        club.setName(request.getName());
+        club.setDescription(request.getDescription());
+        club.setPresident(request.getPresident());
+        club.setEmail(request.getEmail());
+        club.setCategory(request.getCategory());
+        return club;
+    }
+
+    public static void updateEntity(ClubRequest request, Club club) {
+        if (request == null || club == null) return;
+        club.setName(request.getName());
+        club.setDescription(request.getDescription());
+        club.setPresident(request.getPresident());
+        club.setEmail(request.getEmail());
+        club.setCategory(request.getCategory());
     }
 }
