@@ -10,11 +10,11 @@ public final class MembershipMapper {
         if (membership == null) return null;
         return new MembershipResponse(
                 membership.getId(),
-                membership.getUserId(),
-                membership.getClubId(),
-                membership.getStatus() != null ? membership.getStatus().name() : null,
-                membership.getAppliedAt(),
-                membership.getProcessedAt()
+                membership.getUser() != null ? membership.getUser().getId() : null,
+                membership.getClub() != null ? membership.getClub().getId() : null,
+                membership.getStatus(),
+                membership.getJoinedAt(),
+                membership.getUpdatedAt()
         );
     }
 }
