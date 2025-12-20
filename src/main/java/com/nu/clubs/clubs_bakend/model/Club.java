@@ -2,16 +2,9 @@ package com.nu.clubs.clubs_bakend.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -29,10 +22,7 @@ public class Club {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(name = "overview", columnDefinition = "TEXT")
-    private String overview;
-
-    @Column(name = "description")
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column(nullable = false)
@@ -46,9 +36,6 @@ public class Club {
 
     @Column(name = "number_of_members")
     private Integer numberOfMembers;
-
-    @Column(name = "contact_email")
-    private String contactEmail;
 
     @Column(name = "facebook_url")
     private String facebookUrl;

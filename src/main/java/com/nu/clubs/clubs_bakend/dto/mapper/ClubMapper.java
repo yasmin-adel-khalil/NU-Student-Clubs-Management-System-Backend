@@ -5,6 +5,7 @@ import com.nu.clubs.clubs_bakend.dto.ClubResponse;
 import com.nu.clubs.clubs_bakend.model.Club;
 
 public final class ClubMapper {
+
     private ClubMapper() {}
 
     public static ClubResponse toResponse(Club club) {

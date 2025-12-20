@@ -1,10 +1,11 @@
 package com.nu.clubs.clubs_bakend.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "memberships")
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Membership {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,7 +27,7 @@ public class Membership {
     private Club club;
 
     @Column(nullable = false)
-    private String status = "ACTIVE";
+    private String status;
 
     @Column(name = "joined_at")
     private LocalDateTime joinedAt;
@@ -40,8 +42,12 @@ public class Membership {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
-        if (joinedAt == null)
+        if (joinedAt == null) {
             joinedAt = LocalDateTime.now();
+        }
+        if (status == null) {
+            status = "ACTIVE";
+        }
     }
 
     @PreUpdate

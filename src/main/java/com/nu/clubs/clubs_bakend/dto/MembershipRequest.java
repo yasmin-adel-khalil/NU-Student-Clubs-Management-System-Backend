@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MembershipRequest {
+
     @NotNull(message = "User ID is required")
     private Long userId;
 
