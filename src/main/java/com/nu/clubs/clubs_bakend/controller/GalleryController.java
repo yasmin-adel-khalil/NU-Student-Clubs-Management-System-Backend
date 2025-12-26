@@ -1,7 +1,5 @@
 package com.nu.clubs.clubs_bakend.controller;
 
-import com.nu.clubs.clubs_bakend.dto.GalleryRequest;
-import com.nu.clubs.clubs_bakend.dto.GalleryResponse;
 import com.nu.clubs.clubs_bakend.model.Gallery;
 import com.nu.clubs.clubs_bakend.service.GalleryService;
 import org.springframework.http.ResponseEntity;

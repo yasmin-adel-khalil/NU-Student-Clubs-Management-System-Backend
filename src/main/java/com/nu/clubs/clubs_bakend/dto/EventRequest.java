@@ -1,6 +1,5 @@
 package com.nu.clubs.clubs_bakend.dto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class EventRequest {
@@ -8,13 +7,16 @@ public class EventRequest {
     private String description;
     private LocalDateTime eventDate;
     private Long clubId;
+    private String location;
+
     public EventRequest() {}
 
-    public EventRequest(String title, String description, LocalDateTime eventDate, Long clubId) {
+    public EventRequest(String title, String description, LocalDateTime eventDate, Long clubId, String location) {
         this.title = title;
         this.description = description;
         this.eventDate = eventDate;
         this.clubId = clubId;
+        this.location = location;
     }
 
     public String getTitle() { return title; }
@@ -28,5 +30,8 @@ public class EventRequest {
 
     public Long getClubId() { return clubId; }
     public void setClubId(Long clubId) { this.clubId = clubId; }
+
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
 }
 

@@ -1,6 +1,4 @@
 package com.nu.clubs.clubs_bakend.service;
-import com.nu.clubs.clubs_bakend.dto.EventRequest;
-import com.nu.clubs.clubs_bakend.dto.EventResponse;
 import com.nu.clubs.clubs_bakend.exception.NotFoundException;
 import com.nu.clubs.clubs_bakend.model.Event;
 import com.nu.clubs.clubs_bakend.repository.EventRepository;
@@ -8,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -26,12 +23,25 @@ public class EventService {
         return eventRepository.findById(id);
     }
 
+    public Event getEventOrThrow(Long id) {
+        return getEventById(id).orElseThrow(() -> new NotFoundException("Event not found with id: " + id));
+    }
+
     public List<Event> getEventsByClub(Long clubId) {
         return eventRepository.findByClubId(clubId);
     }
 
     public Event saveEvent(Event event) {
         return eventRepository.save(event);
+    }
+
+    public Event createEvent(Event event) {
+        return saveEvent(event);
+    }
+
+    public Event updateEvent(Long id, Event event) {
+        event.setId(id);
+        return saveEvent(event);
     }
 
     public void deleteEvent(Long id) {

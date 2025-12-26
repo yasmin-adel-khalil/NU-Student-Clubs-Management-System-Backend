@@ -32,7 +32,7 @@ public class AdminEventController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Event> update(@PathVariable Long id, @RequestBody EventRequest request) {
-        Event existing = eventService.getEventById(id);
+        Event existing = eventService.getEventOrThrow(id);
         applyRequest(existing, request, false);
         return ResponseEntity.ok(eventService.updateEvent(id, existing));
     }
@@ -64,7 +64,7 @@ public class AdminEventController {
         if (request.getClubId() != null) {
             Club club = clubRepository.findById(request.getClubId())
                     .orElseThrow(() -> new NotFoundException("Club not found: " + request.getClubId()));
-            target.setClub(club);
+            target.setClubId(club.getId());
         } else if (isCreate) {
             throw new NotFoundException("Club is required for the event");
         }

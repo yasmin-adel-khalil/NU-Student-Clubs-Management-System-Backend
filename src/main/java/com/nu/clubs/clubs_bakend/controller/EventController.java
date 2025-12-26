@@ -1,16 +1,11 @@
 package com.nu.clubs.clubs_bakend.controller;
 
-import com.nu.clubs.clubs_bakend.dto.EventRequest;
-import com.nu.clubs.clubs_bakend.dto.EventResponse;
-import com.nu.clubs.clubs_bakend.exception.NotFoundException;
 import com.nu.clubs.clubs_bakend.model.Event;
-import com.nu.clubs.clubs_bakend.repository.EventRepository;
 import com.nu.clubs.clubs_bakend.service.EventService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/events")
