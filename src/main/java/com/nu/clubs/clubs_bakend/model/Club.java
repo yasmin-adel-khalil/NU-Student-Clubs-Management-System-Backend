@@ -1,6 +1,7 @@
 package com.nu.clubs.clubs_bakend.model;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -60,6 +61,10 @@ public class Club {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    // Relationship: memberships in this club
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Membership.class)
+    private Set<Membership> memberships;
 
     @PrePersist
     protected void onCreate() {
