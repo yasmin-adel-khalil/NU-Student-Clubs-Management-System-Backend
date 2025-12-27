@@ -24,7 +24,6 @@ public class ClubsBakendApplication {
 				admin.setAdminLevel("SUPER");
 				admin.setCanManageAdmins(true);
 				admin.setCanManageClubs(true);
-				admin.setCanManageApplications(true);
 				adminRepository.save(admin);
 			}
 		};

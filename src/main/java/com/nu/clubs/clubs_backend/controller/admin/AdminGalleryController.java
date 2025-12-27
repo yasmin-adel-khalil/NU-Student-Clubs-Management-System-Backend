@@ -40,13 +40,13 @@ public class AdminGalleryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        galleryService.deleteGallery(id);
+        galleryService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
     public ResponseEntity<List<Gallery>> list() {
-        return ResponseEntity.ok(galleryService.getAllGallery());
+        return ResponseEntity.ok(galleryService.getAll());
     }
 
     private void applyRequest(Gallery target, GalleryRequest request, boolean isCreate) {
@@ -62,7 +62,7 @@ public class AdminGalleryController {
         if (request.getClubId() != null) {
             Club club = clubRepository.findById(request.getClubId())
                     .orElseThrow(() -> new NotFoundException("Club not found: " + request.getClubId()));
-            target.setClub(club);
+            target.setClubId(club.getId());
         } else if (isCreate) {
             throw new NotFoundException("Club is required for the gallery item");
         }

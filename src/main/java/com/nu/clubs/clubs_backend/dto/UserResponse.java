@@ -1,73 +1,53 @@
 package com.nu.clubs.clubs_backend.dto;
 
-import java.util.Set;
+import java.util.List;
 
 public class UserResponse {
-    private Long id;
+    private Long userId;
     private String email;
-    private String firstName;
-    private String lastName;
-    private Set<String> roles;
-    private Boolean isActive;
-    
+    private List<String> roles;
+    private String token;
+
     // Constructors
     public UserResponse() {}
-    
-    public UserResponse(Long id, String email, String firstName, String lastName, Set<String> roles, Boolean isActive) {
-        this.id = id;
+
+    public UserResponse(Long userId, String email, List<String> roles, String token) {
+        this.userId = userId;
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.roles = roles;
-        this.isActive = isActive;
+        this.token = token;
     }
-    
+
     // Getters and Setters
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
-    
-    public void setId(Long id) {
-        this.id = id;
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
-    
+
     public String getEmail() {
         return email;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    public String getFirstName() {
-        return firstName;
-    }
-    
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    
-    public String getLastName() {
-        return lastName;
-    }
-    
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    
-    public Set<String> getRoles() {
+
+    public List<String> getRoles() {
         return roles;
     }
-    
-    public void setRoles(Set<String> roles) {
+
+    public void setRoles(List<String> roles) {
         this.roles = roles;
     }
-    
-    public Boolean getIsActive() {
-        return isActive;
+
+    public String getToken() {
+        return token;
     }
-    
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

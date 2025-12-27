@@ -10,10 +10,10 @@ import com.nu.clubs.clubs_backend.model.Club;
 
 @Repository
 public interface ClubRepository extends JpaRepository<Club, Long> {
-    
+
     Optional<Club> findByName(String name);
-    
-    List<Club> findByCategory(String category);
-    
+
     List<Club> findByNameContainingIgnoreCase(String name);
+
+    List<Club> findByCategory(String category);
 }

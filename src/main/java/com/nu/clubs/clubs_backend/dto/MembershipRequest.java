@@ -1,22 +1,18 @@
 package com.nu.clubs.clubs_backend.dto;
 
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MembershipRequest {
-	private Long userId;
-	private Long clubId;
 
-	public Long getUserId() {
-		return userId;
-	}
+    @NotNull(message = "User ID is required")
+    private Long userId;
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-	public Long getClubId() {
-		return clubId;
-	}
-
-	public void setClubId(Long clubId) {
-		this.clubId = clubId;
-	}
+    @NotNull(message = "Club ID is required")
+    private Long clubId;
 }
