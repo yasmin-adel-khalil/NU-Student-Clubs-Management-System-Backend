@@ -7,12 +7,17 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "full_name")
+    private String fullName;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -30,7 +35,7 @@ public class User {
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_type", nullable = false)
+    @Column(name = "user_type", insertable = false, updatable = false)
     private UserType userType;
 
     @Column(nullable = false)
@@ -39,15 +44,30 @@ public class User {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at")
+    private Long updatedAt;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    // Constructors
+    // No-arg constructor
     public User() {}
 
+    // Constructor used by Admin/BoardMember (email, password, firstName, lastName)
+    public User(String email, String password, String firstName, String lastName) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.fullName = firstName + " " + lastName;
+        this.active = true;
+        this.updatedAt = System.currentTimeMillis();
+    }
+
+    // Full constructor used by AuthService signup
     public User(String firstName, String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -56,7 +76,8 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.roles = roles;
         this.active = true;
-        this.userType = UserType.User;
+        this.fullName = firstName + " " + lastName;
+        this.updatedAt = System.currentTimeMillis();
     }
 
     // Getters and Setters
@@ -68,10 +89,11 @@ public class User {
         this.id = id;
     }
 
-    // Convenience for code that used getUserId previously
-    public Long getUserId() {
-        return this.id;
-    }
+    // Convenience compatibility method
+    public Long getUserId() { return this.id; }
+
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
 
     public String getFirstName() {
         return firstName;
@@ -136,6 +158,17 @@ public class User {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    public Long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Long updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    // Accept primitive long as well (some services call setUpdatedAt(System.currentTimeMillis()))
+    public void setUpdatedAt(long updatedAt) { this.updatedAt = updatedAt; }
 
     public Set<Role> getRoles() {
         return roles;
