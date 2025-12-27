@@ -1,59 +1,65 @@
 package com.nu.clubs.clubs_bakend.model;
 
 import jakarta.persistence.*;
-import java.util.HashSet;
+import java.time.LocalDateTime;
 import java.util.Set;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-@Table(name = "app_users", uniqueConstraints = @UniqueConstraint(name = "uk_app_users_email", columnNames = "email"))
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "user_type")
+@Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private String firstName;
+    @Column(name = "phone")
+    private String phoneNumber;
 
-    @Column(nullable = false)
-    private String lastName;
-
-    @Column
-    private String phone;
-
-    @Column
-    private String profilePicture;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "app_user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_type", nullable = false)
+    private UserType userType;
 
     @Column(nullable = false)
     private Boolean active = true;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private Long createdAt = System.currentTimeMillis();
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    private Long updatedAt = System.currentTimeMillis();
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 
-    public User() {
-    }
+    // Constructors
+    public User() {}
 
-    public User(String email, String password, String firstName, String lastName) {
-        this.email = email;
-        this.password = password;
+    public User(String firstName, String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.roles = roles;
+        this.active = true;
+        this.userType = UserType.User;
     }
 
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -62,20 +68,9 @@ public class User {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    // Convenience for code that used getUserId previously
+    public Long getUserId() {
+        return this.id;
     }
 
     public String getFirstName() {
@@ -94,28 +89,36 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public String getPassword() {
+        return password;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 
     public Boolean getActive() {
@@ -126,19 +129,19 @@ public class User {
         this.active = active;
     }
 
-    public Long getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Long createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Long getUpdatedAt() {
-        return updatedAt;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setUpdatedAt(Long updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
