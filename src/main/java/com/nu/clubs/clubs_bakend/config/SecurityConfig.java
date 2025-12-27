@@ -38,8 +38,8 @@ public class SecurityConfig {
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable());
 
-        // For H2 console (if used)
-        http.headers(headers -> headers.frameOptions().disable());
+        // For H2 console (if used) - use lambda-based headers API for Spring Security 6 compatibility
+        http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
         return http.build();
     }
