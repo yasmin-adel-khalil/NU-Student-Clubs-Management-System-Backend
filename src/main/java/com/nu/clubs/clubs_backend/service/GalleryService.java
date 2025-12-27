@@ -28,8 +28,8 @@ public class GalleryService {
             g.setDescription(details.getDescription());
         if (details.getImageUrl() != null)
             g.setImageUrl(details.getImageUrl());
-        if (details.getClub() != null)
-            g.setClub(details.getClub());
+        if (details.getClubId() != null)
+            g.setClubId(details.getClubId());
         return galleryRepository.save(g);
     }
 

@@ -3,15 +3,14 @@ package com.nu.clubs.clubs_backend.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.Id;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Data
 @Table(name = "app_events")
-    public class Event {
-    @jakarta.persistence.Id
+public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

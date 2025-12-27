@@ -40,13 +40,13 @@ public class AdminGalleryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        galleryService.delete(id);
+        galleryService.deleteGallery(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
     public ResponseEntity<List<Gallery>> list() {
-        return ResponseEntity.ok(galleryService.getAll());
+        return ResponseEntity.ok(galleryService.getAllGallery());
     }
 
     private void applyRequest(Gallery target, GalleryRequest request, boolean isCreate) {

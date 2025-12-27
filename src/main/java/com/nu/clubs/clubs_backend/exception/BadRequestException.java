@@ -1,4 +1,11 @@
 package com.nu.clubs.clubs_backend.exception;
 
-public class BadRequestException {
+public class BadRequestException extends RuntimeException {
+	public BadRequestException() {
+		super();
+	}
+
+	public BadRequestException(String message) {
+		super(message);
+	}
 }

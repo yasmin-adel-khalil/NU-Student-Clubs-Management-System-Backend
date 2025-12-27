@@ -33,7 +33,7 @@ public class AdminEventController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Event> update(@PathVariable Long id, @RequestBody EventRequest request) {
-        Event existing = eventService.getEventOrThrow(id);
+        Event existing = eventService.getEventById(id);
         applyRequest(existing, request, false);
         return ResponseEntity.ok(eventService.updateEvent(id, existing));
     }

@@ -30,8 +30,8 @@ public class EventService {
             e.setEventDate(details.getEventDate());
         if (details.getLocation() != null)
             e.setLocation(details.getLocation());
-        if (details.getClub() != null)
-            e.setClub(details.getClub());
+        if (details.getClubId() != null)
+            e.setClubId(details.getClubId());
         return eventRepository.save(e);
     }
 

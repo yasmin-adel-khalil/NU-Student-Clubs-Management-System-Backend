@@ -3,6 +3,7 @@ package com.nu.clubs.clubs_backend.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
