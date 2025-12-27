@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.nu.clubs.clubs_backend.dto.AdminRequest;
+import com.nu.clubs.clubs_backend.dto.AdminResponse;
 import com.nu.clubs.clubs_backend.model.Admin;
 import com.nu.clubs.clubs_backend.service.AdminService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admins")
@@ -18,27 +21,28 @@ public class AdminController {
     private AdminService adminService;
 
     @PostMapping
-    public ResponseEntity<Admin> createAdmin(@RequestBody Admin admin) {
+    public ResponseEntity<AdminResponse> createAdmin(@RequestBody AdminRequest admin) {
         Admin createdAdmin = adminService.createAdmin(admin);
-        return ResponseEntity.ok(createdAdmin);
+        return ResponseEntity.ok(toResponse(createdAdmin));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Admin> updateAdmin(@PathVariable Long id, @RequestBody Admin admin) {
+    public ResponseEntity<AdminResponse> updateAdmin(@PathVariable Long id, @RequestBody AdminRequest admin) {
         Admin updatedAdmin = adminService.updateAdmin(id, admin);
-        return ResponseEntity.ok(updatedAdmin);
+        return ResponseEntity.ok(toResponse(updatedAdmin));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Admin> getAdminById(@PathVariable Long id) {
+    public ResponseEntity<AdminResponse> getAdminById(@PathVariable Long id) {
         Admin admin = adminService.getAdminById(id);
-        return ResponseEntity.ok(admin);
+        return ResponseEntity.ok(toResponse(admin));
     }
 
     @GetMapping
-    public ResponseEntity<List<Admin>> getAllAdmins() {
+    public ResponseEntity<List<AdminResponse>> getAllAdmins() {
         List<Admin> admins = adminService.getAllAdmins();
-        return ResponseEntity.ok(admins);
+        List<AdminResponse> response = admins.stream().map(this::toResponse).collect(Collectors.toList());
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
@@ -51,5 +55,15 @@ public class AdminController {
     public ResponseEntity<Void> permanentlyDeleteAdmin(@PathVariable Long id) {
         adminService.permanentlyDeleteAdmin(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private AdminResponse toResponse(Admin admin) {
+        return new AdminResponse(
+                admin.getId(),
+                admin.getName(),
+                admin.getPosition(),
+                admin.getClub(),
+                admin.getCommittee(),
+                admin.getSeason());
     }
 }

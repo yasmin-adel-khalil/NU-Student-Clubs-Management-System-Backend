@@ -60,6 +60,10 @@ public class AdminCommitteeController {
             Club club = clubRepository.findById(request.getClubId())
                     .orElseThrow(() -> new NotFoundException("Club not found: " + request.getClubId()));
             target.setClub(club);
+        } else if (request.getClubName() != null && !request.getClubName().isBlank()) {
+            Club club = clubRepository.findByName(request.getClubName())
+                    .orElseThrow(() -> new NotFoundException("Club not found: " + request.getClubName()));
+            target.setClub(club);
         } else if (isCreate) {
             throw new NotFoundException("Club is required for the committee");
         }

@@ -4,6 +4,8 @@ public class CommitteeRequest {
     private String name;
     private String description;
     private Long clubId;
+    private String clubName;
+    private String headName;
 
     public String getName() {
         return name;
@@ -27,5 +29,21 @@ public class CommitteeRequest {
 
     public void setClubId(Long clubId) {
         this.clubId = clubId;
+    }
+
+    public String getClubName() {
+        return clubName;
+    }
+
+    public void setClubName(String clubName) {
+        this.clubName = clubName;
+    }
+
+    public String getHeadName() {
+        return headName;
+    }
+
+    public void setHeadName(String headName) {
+        this.headName = headName;
     }
 }
